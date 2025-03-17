@@ -16,6 +16,10 @@ public class SelectTestFigureOptionListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		FiguresJoe.figureScript1(driverManager.getCurrentDriver());
+		if (e.getActionCommand().compareTo("Figure Joe 2") == 0){
+			FiguresJoe.figureScript2(driverManager.getCurrentDriver());
+		} else {
+			FiguresJoe.figureScript1(driverManager.getCurrentDriver());
+		}
 	}
 }
