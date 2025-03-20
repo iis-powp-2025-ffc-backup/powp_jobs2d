@@ -5,11 +5,12 @@ import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDrawerAdapter;
-import edu.kis.powp.jobs2d.drivers.adapter.MyAdapter;
 import edu.kis.powp.jobs2d.events.SelectTestFigure1Listener;
 import edu.kis.powp.jobs2d.events.SelectTestFigure2Listener;
+import edu.kis.powp.jobs2d.events.SelectTestFigureJaneListener;
 import edu.kis.powp.jobs2d.features.DrawFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 
@@ -24,6 +25,7 @@ public class TestJobs2dPatterns {
 	private static void setupPresetTests(Application application) {
 		application.addTest("Figure Joe 1", new SelectTestFigure1Listener(DriverFeature.getDriverManager()));
 		application.addTest("Figure Joe 2", new SelectTestFigure2Listener(DriverFeature.getDriverManager()));
+		application.addTest("Figure Jane", new SelectTestFigureJaneListener(DriverFeature.getDriverManager()));
 	}
 
 	/**
@@ -36,11 +38,14 @@ public class TestJobs2dPatterns {
 		DriverFeature.addDriver("Logger Driver", loggerDriver);
 		DriverFeature.getDriverManager().setCurrentDriver(loggerDriver);
 
-		Job2dDriver testDriver = new MyAdapter();
-		DriverFeature.addDriver("Buggy Simulator", testDriver);
+		Job2dDriver specialLineDriver = new LineDrawerAdapter(DrawFeature.getDrawerController(), LineFactory.getSpecialLine());
+		DriverFeature.addDriver("Special Line Simualtor", specialLineDriver);
 
-		Job2dDriver lineDrawerDriver = new LineDrawerAdapter();
-		DriverFeature.addDriver("Special Line Simualtor", lineDrawerDriver);
+		Job2dDriver dottedLineDriver = new LineDrawerAdapter(DrawFeature.getDrawerController(), LineFactory.getDottedLine());
+		DriverFeature.addDriver("Dotted Line Simulator", dottedLineDriver);
+
+		Job2dDriver basicLineDriver = new LineDrawerAdapter(DrawFeature.getDrawerController(), LineFactory.getBasicLine());
+		DriverFeature.addDriver("Basic line Simulator", basicLineDriver);
 
 		DriverFeature.updateDriverInfo();
 	}
