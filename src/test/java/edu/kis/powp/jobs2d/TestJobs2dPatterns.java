@@ -18,15 +18,23 @@ import edu.kis.powp.jobs2d.features.DriverFeature;
 
 public class TestJobs2dPatterns {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static LineDrawerAdapter lineDrawerAdapter; // Added reference for customization
+	private static LineDrawerAdapter lineDrawerAdapter;
+
+	public static final String FIGURE_JOE_1 = "Figure Joe 1";
+	public static final String FIGURE_JOE_2 = "Figure Joe 2";
+	public static final String FIGURE_JANE = "Figure Jane";
+	public static final String FIGURE_RECTANGLE = "Rectangle";
+	public static final String FIGURE_TRIANGLE = "Triangle";
 
 	private static void setupPresetTests(Application application) {
 		SelectTestFigureOptionListener selectTestFigureOptionListener = new SelectTestFigureOptionListener(
 				DriverFeature.getDriverManager());
 
-		application.addTest("Figure Joe 1", selectTestFigureOptionListener);
-		application.addTest("Figure Joe 2", selectTestFigureOptionListener);
-		application.addTest("Figure Jane 1", selectTestFigureOptionListener);
+		application.addTest(FIGURE_JOE_1, selectTestFigureOptionListener);
+		application.addTest(FIGURE_JOE_2, selectTestFigureOptionListener);
+		application.addTest(FIGURE_JANE, selectTestFigureOptionListener);
+		application.addTest(FIGURE_RECTANGLE, selectTestFigureOptionListener);
+		application.addTest(FIGURE_TRIANGLE, selectTestFigureOptionListener);
 	}
 
 	private static void setupDrivers(Application application) {
