@@ -9,7 +9,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import java.awt.*;
 import java.lang.reflect.Field;
 
-public class LineDrawerAdapter extends DrawPanelController implements Job2dDriver {
+public class LineDrawerAdapter implements Job2dDriver {
     private int startX = 0, startY = 0;
 
     private Color color = Color.BLACK;
