@@ -5,16 +5,21 @@ import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.kis.legacy.drawer.panel.DefaultDrawerFrame;
-import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.drivers.adapter.MyAdapter;
-import edu.kis.powp.jobs2d.events.SelectChangeVisibleOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
-import edu.kis.powp.jobs2d.features.DrawerFeature;
+
+import edu.kis.powp.jobs2d.events.SelectTestFigure1Listener;
+import edu.kis.powp.jobs2d.events.SelectTestFigure2Listener;
+import edu.kis.powp.jobs2d.events.SelectTestFigure3Listener;
+import edu.kis.powp.jobs2d.events.SelectTestFigure4Listener;
+
+import edu.kis.powp.jobs2d.features.DrawFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 
-public class TestJobs2dPatterns {
+import edu.kis.powp.jobs2d.drivers.adapter.LineDrawerAdapter;
+
+public class TestJobs2dPatterns
+{
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
@@ -22,11 +27,12 @@ public class TestJobs2dPatterns {
 	 * 
 	 * @param application Application context.
 	 */
-	private static void setupPresetTests(Application application) {
-		SelectTestFigureOptionListener selectTestFigureOptionListener = new SelectTestFigureOptionListener(
-				DriverFeature.getDriverManager());
-
-		application.addTest("Figure Joe 1", selectTestFigureOptionListener);
+	private static void setupPresetTests(Application application)
+	{
+		application.addTest("Figure Joe 1", new SelectTestFigure1Listener(DriverFeature.getDriverManager()));
+		application.addTest("Figure Joe 2", new SelectTestFigure2Listener(DriverFeature.getDriverManager()));
+		application.addTest("My Figure 1", new SelectTestFigure3Listener(DriverFeature.getDriverManager()));
+		application.addTest("My Figure 2", new SelectTestFigure4Listener(DriverFeature.getDriverManager()));
 	}
 
 	/**
@@ -34,13 +40,18 @@ public class TestJobs2dPatterns {
 	 * 
 	 * @param application Application context.
 	 */
-	private static void setupDrivers(Application application) {
+	private static void setupDrivers(Application application)
+	{
 		Job2dDriver loggerDriver = new LoggerDriver();
 		DriverFeature.addDriver("Logger Driver", loggerDriver);
+
 		DriverFeature.getDriverManager().setCurrentDriver(loggerDriver);
 
 		Job2dDriver testDriver = new MyAdapter();
 		DriverFeature.addDriver("Buggy Simulator", testDriver);
+
+		Job2dDriver custom_adapter = new LineDrawerAdapter();
+		DriverFeature.addDriver("Custom Adapter (my)", custom_adapter);
 
 		DriverFeature.updateDriverInfo();
 	}
@@ -50,19 +61,14 @@ public class TestJobs2dPatterns {
 	 * 
 	 * @param application Application context.
 	 */
-	private static void setupDefaultDrawerVisibilityManagement(Application application) {
-		DefaultDrawerFrame defaultDrawerWindow = DefaultDrawerFrame.getDefaultDrawerFrame();
-		application.addComponentMenuElementWithCheckBox(DrawPanelController.class, "Default Drawer Visibility",
-				new SelectChangeVisibleOptionListener(defaultDrawerWindow), true);
-		defaultDrawerWindow.setVisible(true);
-	}
 
 	/**
 	 * Setup menu for adjusting logging settings.
 	 * 
 	 * @param application Application context.
 	 */
-	private static void setupLogger(Application application) {
+	private static void setupLogger(Application application)
+	{
 		application.addComponentMenu(Logger.class, "Logger", 0);
 		application.addComponentMenuElement(Logger.class, "Clear log",
 				(ActionEvent e) -> application.flushLoggerOutput());
@@ -78,14 +84,20 @@ public class TestJobs2dPatterns {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+	public static void main(String[] args)
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
 				Application app = new Application("2d jobs Visio");
-				DrawerFeature.setupDrawerPlugin(app);
-				setupDefaultDrawerVisibilityManagement(app);
+
+				DrawFeature.setupDrawerPlugin(app);
+
+				//setupDefaultDrawerVisibilityManagement(app); drawing on one place only
 
 				DriverFeature.setupDriverPlugin(app);
+
 				setupDrivers(app);
 				setupPresetTests(app);
 				setupLogger(app);
